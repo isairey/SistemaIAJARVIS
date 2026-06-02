@@ -1,257 +1,574 @@
-# JARVIS
+<div align="center">
 
+<img width="220" src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" />
 
-[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2303.17580)
-[![Open in Spaces](https://img.shields.io/badge/%F0%9F%A4%97-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/microsoft/HuggingGPT)
+# 🤖 JARVIS (HuggingGPT)
 
-The mission of JARVIS is to explore artificial general intelligence (AGI) and deliver cutting-edge research to the whole community.
-
-## What's New
-
-+  [2024.01.15] We release Easytool for easier tool usage.
-   + The code and datasets are available at [EasyTool](/easytool).
-   + The paper is available at [EasyTool: Enhancing LLM-based Agents with Concise Tool Instruction](https://arxiv.org/abs/2401.06201).
-+  [2023.11.30] We release TaskBench for evaluating task automation capability of LLMs.
-   + The code and datasets are available at [TaskBench](/taskbench).
-   + The paper is available at [TaskBench: Benchmarking Large Language Models for Task Automation](https://arxiv.org/abs/2311.18760).
-+  [2023.07.28] We are now in the process of planning evaluation and project rebuilding. We will release a new version of Jarvis in the near future.
-+  [2023.07.24] We released a light langchain version of Jarvis. See <a href="https://github.com/langchain-ai/langchain/tree/master/libs/experimental/langchain_experimental/autonomous_agents/hugginggpt">here</a>.
-+  [2023.04.16] Jarvis now supports the OpenAI service on the Azure platform and the GPT-4 model.
-+  [2023.04.06] We added the Gradio demo and built the web API for `/tasks` and `/results` in `server` mode.
-   +  The Gradio demo is now hosted on Hugging Face Space. (Build with `inference_mode=hybrid` and `local_deployment=standard`)
-   +  The Web API `/tasks` and `/results` access intermediate results for `Stage #1`: task planning and `Stage #1-3`: model selection with execution results. See <a href="#Server">here</a>.
-+  [2023.04.03] We added the CLI mode and provided parameters for configuring the scale of local endpoints.
-   +  You can enjoy a lightweight experience with Jarvis without deploying the models locally. See <a href="#Configuration">here</a>.
-   +  Just run `python awesome_chat.py --config configs/config.lite.yaml` to experience it.
-+  [2023.04.01] We updated a version of code for building.
-
-
-### Overview
-
-Language serves as an interface for LLMs to connect numerous AI models for solving complicated AI tasks!
+### Sistema de Inteligencia Artificial General basado en LLMs y modelos especializados 🚀
 
 <p align="center">
-<img width="100%" alt="image" src="./hugginggpt/assets/intro.png">    
+  <b>JARVIS</b> (HuggingGPT) es una plataforma experimental desarrollada por Microsoft Research que conecta modelos de lenguaje de gran escala con cientos de modelos especializados de Hugging Face para resolver tareas complejas de Inteligencia Artificial.
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/JARVIS-HuggingGPT-blueviolet?style=for-the-badge">
+  <img src="https://img.shields.io/badge/LLM-Orchestration-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/HuggingFace-AI-yellow?style=for-the-badge&logo=huggingface&logoColor=black">
+  <img src="https://img.shields.io/badge/Microsoft-Research-0078D4?style=for-the-badge&logo=microsoft&logoColor=white">
+</p>
 
-See our paper: [HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in HuggingFace](http://arxiv.org/abs/2303.17580), Yongliang Shen, Kaitao Song, Xu Tan, Dongsheng Li, Weiming Lu and Yueting Zhuang (the first two authors contribute equally)
+<p align="center">
+  <a href="#-acerca-del-proyecto">Acerca</a> •
+  <a href="#-arquitectura">Arquitectura</a> •
+  <a href="#-tecnologías-utilizadas">Tecnologías</a> •
+  <a href="#-instalación">Instalación</a> •
+  <a href="#-modos-de-ejecución">Ejecución</a>
+</p>
 
-We introduce a collaborative system that consists of **an LLM as the controller** and **numerous expert models as collaborative executors** (from HuggingFace Hub). The workflow of our system consists of four stages:
-+ **Task Planning**: Using ChatGPT to analyze the requests of users to understand their intention, and disassemble them into possible solvable tasks.
-+ **Model Selection**: To solve the planned tasks, ChatGPT selects expert models hosted on Hugging Face based on their descriptions.
-+ **Task Execution**: Invokes and executes each selected model, and return the results to ChatGPT.
-+ **Response Generation**: Finally, using ChatGPT to integrate the prediction of all models, and generate responses.
+</div>
 
-<p align="center"><img src="./hugginggpt/assets/overview.jpg"></p>
+---
 
-### System Requirements
+# 🌌 Acerca del proyecto
 
-#### Default (Recommended)
+**JARVIS (HuggingGPT)** es una arquitectura de Inteligencia Artificial que utiliza un LLM como controlador principal capaz de coordinar múltiples modelos especializados para resolver tareas complejas.
 
-For `configs/config.default.yaml`:
+El objetivo del proyecto es acercarse al concepto de:
 
-+ Ubuntu 16.04 LTS
-+ VRAM >= 24GB
-+ RAM > 12GB (minimal), 16GB (standard), 80GB (full)
-+ Disk > 284GB 
-  + 42GB for `damo-vilab/text-to-video-ms-1.7b`
-  + 126GB for `ControlNet`
-  + 66GB for `stable-diffusion-v1-5`
-  + 50GB for others
-  
-#### Minimum (Lite)
+- 🧠 Inteligencia Artificial General (AGI)
+- 🤖 Automatización de tareas complejas
+- 🔗 Orquestación de modelos IA
+- 🖼️ Procesamiento multimodal
+- 🎙️ Voz, texto e imágenes
+- ⚡ Integración con Hugging Face
 
-For `configs/config.lite.yaml`:
+---
 
-+ Ubuntu 16.04 LTS
-+ Nothing else
+# ✨ Características
 
-The configuration `configs/config.lite.yaml` does not require any expert models to be downloaded and deployed locally. However, it means that Jarvis is restricted to models running stably on HuggingFace Inference Endpoints.
+## 🧠 Controlador Inteligente
 
-### Quick Start
+- Análisis de instrucciones
+- Comprensión contextual
+- Planeación automática
+- Gestión de modelos IA
 
-First replace `openai.key` and `huggingface.token` in `server/configs/config.default.yaml` with **your personal OpenAI Key** and **your Hugging Face Token**, or put them in the environment variables `OPENAI_API_KEY` and `HUGGINGFACE_ACCESS_TOKEN` respectively. Then run the following commands:
+---
 
-<span id="Server"></span>
+## 🤖 Orquestación de Modelos
 
-#### For Server:
+- Selección automática de modelos
+- Coordinación entre herramientas
+- Ejecución paralela
+- Integración de resultados
+
+---
+
+## 🖼️ IA Multimodal
+
+- Procesamiento de imágenes
+- Procesamiento de texto
+- Generación de imágenes
+- Reconocimiento visual
+
+---
+
+## ⚡ Automatización
+
+- Descomposición de tareas
+- Planificación inteligente
+- Ejecución autónoma
+- Respuestas generadas automáticamente
+
+---
+
+# 🏗️ Arquitectura
+
+## 1️⃣ Task Planning
+
+El LLM analiza la solicitud del usuario y divide el problema en múltiples subtareas.
+
+### Funciones
+
+- Comprensión de intención
+- Desglose de procesos
+- Planificación automática
+
+---
+
+## 2️⃣ Model Selection
+
+JARVIS selecciona automáticamente los modelos adecuados desde Hugging Face.
+
+### Funciones
+
+- Evaluación de capacidades
+- Selección inteligente
+- Compatibilidad automática
+
+---
+
+## 3️⃣ Task Execution
+
+Los modelos seleccionados ejecutan cada tarea asignada.
+
+### Funciones
+
+- Procesamiento distribuido
+- Ejecución multimodal
+- Integración de resultados
+
+---
+
+## 4️⃣ Response Generation
+
+El LLM recopila los resultados y genera una respuesta final.
+
+### Funciones
+
+- Interpretación de resultados
+- Generación de respuestas
+- Comunicación natural
+
+---
+
+# 🚀 Capacidades
+
+## 📝 Procesamiento de Texto
+
+- Resúmenes
+- Traducción
+- Preguntas y respuestas
+- Extracción de entidades
+
+---
+
+## 🖼️ Visión Computacional
+
+- Detección de objetos
+- Clasificación de imágenes
+- Captioning
+- Segmentación
+
+---
+
+## 🎨 Generación de Imágenes
+
+- Stable Diffusion
+- ControlNet
+- Image-to-Image
+- Text-to-Image
+
+---
+
+## 🎙️ Audio e Inteligencia Multimedia
+
+- Reconocimiento de voz
+- Procesamiento de audio
+- Generación multimedia
+- Conversión multimodal
+
+---
+
+# 🛠️ Tecnologías utilizadas
+
+## 🤖 Inteligencia Artificial
+
+<p>
+  <img src="https://skillicons.dev/icons?i=python" />
+</p>
+
+- OpenAI GPT
+- Hugging Face
+- Transformers
+- ControlNet
+- Stable Diffusion
+
+---
+
+## ⚙️ Backend
+
+<p>
+  <img src="https://skillicons.dev/icons?i=python,fastapi" />
+</p>
+
+- Python
+- APIs REST
+- Servidor de modelos
+- Orquestación de tareas
+
+---
+
+## 🌐 Frontend
+
+<p>
+  <img src="https://skillicons.dev/icons?i=nodejs,react" />
+</p>
+
+- React
+- Node.js
+- Web Client
+- Gradio
+
+---
+
+## 🧰 Herramientas
+
+<p>
+  <img src="https://skillicons.dev/icons?i=git,github,vscode,docker" />
+</p>
+
+- Git
+- GitHub
+- Docker
+- VS Code
+
+---
+
+# 📂 Estructura del proyecto
 
 ```bash
-# setup env
-cd server
+JARVIS/
+│
+├── server/
+│   ├── configs/
+│   ├── models/
+│   ├── awesome_chat.py
+│   └── models_server.py
+│
+├── web/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── hugginggpt/
+│   ├── assets/
+│   └── docs/
+│
+├── taskbench/
+├── easytool/
+├── Dockerfile
+└── README.md
+```
+
+---
+
+# ⚡ Requisitos
+
+## Configuración recomendada
+
+- Ubuntu 16.04+
+- GPU NVIDIA
+- VRAM 24GB+
+- RAM 16GB+
+- Disco 284GB+
+
+---
+
+## Configuración ligera
+
+- Ubuntu 16.04+
+- Conexión a Hugging Face
+- Sin modelos locales
+
+---
+
+# 🚀 Instalación
+
+## 1️⃣ Clonar repositorio
+
+```bash
+git clone https://github.com/microsoft/JARVIS.git
+```
+
+---
+
+## 2️⃣ Entrar al proyecto
+
+```bash
+cd JARVIS
+```
+
+---
+
+## 3️⃣ Crear entorno virtual
+
+```bash
 conda create -n jarvis python=3.8
 conda activate jarvis
-conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
-pip install -r requirements.txt
-
-# download models. Make sure that `git-lfs` is installed.
-cd models
-bash download.sh # required when `inference_mode` is `local` or `hybrid`. 
-
-# run server
-cd ..
-python models_server.py --config configs/config.default.yaml # required when `inference_mode` is `local` or `hybrid`
-python awesome_chat.py --config configs/config.default.yaml --mode server # for text-davinci-003
 ```
 
-Now you can access Jarvis' services by the Web API. 
+---
 
-+ `/hugginggpt` --method `POST`, access the full service.
-+ `/tasks` --method `POST`, access intermediate results for Stage #1.
-+ `/results` --method `POST`, access intermediate results for Stage #1-3.
-
-For example:
+## 4️⃣ Instalar PyTorch
 
 ```bash
-# request
-curl --location 'http://localhost:8004/tasks' \
---header 'Content-Type: application/json' \
---data '{
-    "messages": [
-        {
-            "role": "user",
-            "content": "based on pose of /examples/d.jpg and content of /examples/e.jpg, please show me a new image"
-        }
-    ]
-}'
-
-# response
-[{"args":{"image":"/examples/d.jpg"},"dep":[-1],"id":0,"task":"openpose-control"},{"args":{"image":"/examples/e.jpg"},"dep":[-1],"id":1,"task":"image-to-text"},{"args":{"image":"<GENERATED>-0","text":"<GENERATED>-1"},"dep":[1,0],"id":2,"task":"openpose-text-to-image"}]
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
 ```
 
+---
 
-#### For Web:
+## 5️⃣ Instalar dependencias
 
-We provide a user-friendly web page. After starting `awesome_chat.py` in a server mode, you can run the commands to communicate with Jarvis in your browser:
- 
-- you need to install `nodejs` and `npm` first.
-- [ IMPORTANT ] if you are running the web client on another machine, you need set `http://{LAN_IP_of_the_server}:{port}/` to `HUGGINGGPT_BASE_URL` of `web/src/config/index.ts`.
-- if you want to use the video generation feature, you need to compile `ffmpeg` manually with H.264.
-- you can switch to ChatGPT by `double click` on the setting icon!
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 🔑 Configuración
+
+Agregar credenciales:
+
+```env
+OPENAI_API_KEY=YOUR_KEY
+HUGGINGFACE_ACCESS_TOKEN=YOUR_TOKEN
+```
+
+o modificar:
+
+```yaml
+server/configs/config.default.yaml
+```
+
+---
+
+# 🖥️ Modos de ejecución
+
+## 🌐 Server Mode
+
+Ejecuta la API principal.
+
+```bash
+python models_server.py --config configs/config.default.yaml
+
+python awesome_chat.py \
+--config configs/config.default.yaml \
+--mode server
+```
+
+---
+
+## 💻 CLI Mode
+
+Uso desde terminal.
+
+```bash
+python awesome_chat.py \
+--config configs/config.default.yaml \
+--mode cli
+```
+
+---
+
+## 🌍 Web Mode
+
+Cliente web basado en React.
 
 ```bash
 cd web
+
 npm install
+
 npm run dev
 ```
 
-```bash
-# Optional: Install ffmpeg
-# This command need be executed without errors.
-LD_LIBRARY_PATH=/usr/local/lib /usr/local/bin/ffmpeg -i input.mp4 -vcodec libx264 output.mp4
-```
+---
 
-<span id="Gradio"></span>
+## 🎛️ Gradio Mode
 
-#### For Gradio
-
-The Gradio demo is now hosted on Hugging Face Space. You can also run the following commands to start the demo locally:
+Interfaz rápida para pruebas.
 
 ```bash
-python models_server.py --config configs/config.gradio.yaml
-python run_gradio_demo.py --config configs/config.gradio.yaml
+python models_server.py \
+--config configs/config.gradio.yaml
 
-# or run the HF Space as a Docker image (Build with `inference_mode=hibrid` and `local_deployment=standard`)
-docker run -it -p 7860:7860 --platform=linux/amd64 registry.hf.space/microsoft-hugginggpt:latest python app.py
+python run_gradio_demo.py \
+--config configs/config.gradio.yaml
 ```
 
-#### For CLI:
+---
 
-You can also run Jarvis more easily in CLI mode:
+# 📡 API REST
+
+## Endpoints principales
+
+### 🧠 HuggingGPT
+
+```http
+POST /hugginggpt
+```
+
+Servicio completo.
+
+---
+
+### 📋 Tasks
+
+```http
+POST /tasks
+```
+
+Obtiene planificación de tareas.
+
+---
+
+### ⚙️ Results
+
+```http
+POST /results
+```
+
+Obtiene resultados intermedios.
+
+---
+
+# 🧠 Casos de uso
+
+## Automatización Inteligente
+
+- Análisis documental
+- Procesamiento multimedia
+- Generación de imágenes
+- Asistentes virtuales
+
+---
+
+## Investigación IA
+
+- Sistemas multiagente
+- AGI experimental
+- Coordinación de modelos
+- Tool Learning
+
+---
+
+## Aplicaciones Empresariales
+
+- Automatización de procesos
+- Asistentes corporativos
+- Análisis de datos
+- Generación de contenido
+
+---
+
+# 📊 Proyectos relacionados
+
+## 🔧 EasyTool
+
+Herramienta para simplificar el uso de herramientas por agentes LLM.
+
+---
+
+## 📈 TaskBench
+
+Benchmark para evaluar automatización de tareas mediante modelos de lenguaje.
+
+---
+
+# 🚧 Roadmap
+
+## 🔮 Próximas mejoras
+
+- Más modelos open source
+- Mejor planificación de tareas
+- Integración con nuevos LLMs
+- Agentes autónomos avanzados
+- Mayor soporte multimodal
+
+---
+
+# 📚 Publicaciones
+
+## HuggingGPT
+
+```bibtex
+@inproceedings{shen2023hugginggpt,
+title={HuggingGPT},
+year={2023}
+}
+```
+
+---
+
+## TaskBench
+
+```bibtex
+@article{shen2023taskbench,
+title={TaskBench},
+year={2023}
+}
+```
+
+---
+
+## EasyTool
+
+```bibtex
+@article{yuan2024easytool,
+title={EasyTool},
+year={2024}
+}
+```
+
+---
+
+# 🤝 Contribuciones
+
+Las contribuciones son bienvenidas ❤️
+
+## Cómo contribuir
+
+1. Fork del proyecto
 
 ```bash
-cd server
-python awesome_chat.py --config configs/config.default.yaml --mode cli
+git checkout -b feature/nueva-funcionalidad
 ```
 
-Examples of CLI mode:
-
-```
-Welcome to Jarvis! A collaborative system that consists of an LLM as the controller and numerous expert models as collaborative executors. Jarvis can plan tasks, schedule Hugging Face models, generate friendly responses based on your requests, and help you with many things. Please enter your request (`exit` to exit).
-[ User ]: Given a collection of image A: /examples/a.jpg, B: /examples/b.jpg, C: /examples/c.jpg, please tell me how many zebras in these picture?
-[ Jarvis ]: Based on your request, I have used several models to process the images you provided. For the image A: /examples/a.jpg, I used the image-to-text model nlpconnect/vit-gpt2-image-captioning to generate the text "a cat sitting on a window sill looking out". Then I used the object-detection model facebook/detr-resnet-50 to generate the image with predicted box '/images/a3dc.jpg', which contains two objects with labels 'potted plant' and 'cat'. For the image B: /examples/b.jpg, I used the image-to-text model nlpconnect/vit-gpt2-image-captioning to generate the text "two zebras standing in a field of dry grass". Then I used the object-detection model facebook/detr-resnet-50 to generate the image with predicted box '/images/f5df.jpg', which contains three objects with labels 'zebra'. For the image C: /examples/c.jpg, I used the image-to-text model nlpconnect/vit-gpt2-image-captioning to generate the text "a zebra standing in a field of tall grass". Then I used the object-detection model facebook/detr-resnet-50 to generate the image with predicted box '/images/69c7.jpg', which contains one object with label 'zebra'. Finally, I used the canny-control model canny-control to generate the image '/images/7e18.png' based on the image /examples/f.jpg. Therefore, there are four zebras in these pictures. Is there anything else I can help you with?
-[ User ]: Please answer all the named entities in the sentence: Iron Man is a superhero appearing in American comic books published by Marvel Comics. The character was co-created by writer and editor Stan Lee, developed by scripter Larry Lieber, and designed by artists Don Heck and Jack Kirby.
-[ Jarvis ]: Sure, I understand your request. Based on the inference results of the models, I will answer your request step by step. Firstly, I used the token-classification model dslim/bert-base-NER to recognize the named entities in the sentence. The inference result is that the named entities are Iron Man, Stan Lee, Larry Lieber, Don Heck and Jack Kirby. Then, I used the question-answering model deepset/roberta-base-squad2 to answer your request. The inference result is that there is no output since the context cannot be empty. Therefore, I cannot make it. I hope this answer your request. Is there anything else I can help you with?
-[ User ]: Please generate a canny image based on /examples/f.jpg
-[ Jarvis ]: Sure. I have generated a canny image based on /examples/f.jpg. To do this, I first used the image-to-text model nlpconnect/vit-gpt2-image-captioning to generate the text description of the image, which is "a herd of giraffes and zebras grazing in a field". Then I used the canny-control model to generate the canny image of the original image, which is stored in the path "/images/1ea2.png". Finally, I used the canny-text-to-image model lllyasviel/sd-controlnet-canny to generate the canny image based on the text description and the canny image, which is stored in the path "/images/ba66.png". Do you need anything else?
-```
-
-
-### Configuration
-
-The server-side configuration file is `server/configs/config.default.yaml`, and some parameters are presented as follows:
-
-+ `model`: LLM, currently supports `text-davinci-003`. We are working on integrating more open-source LLMs.
-+ `inference_mode`: mode of inference endpoints
-  + `local`: only use the local inference endpoints
-  + `huggingface`: only use the Hugging Face Inference Endpoints **(free of local inference endpoints)**
-  + `hybrid`: both of `local` and `huggingface`
-+ `local_deployment`: scale of locally deployed models, works under `local` or `hybrid` inference mode:
-  +  `minimal` (RAM>12GB, ControlNet only)
-  +  `standard` (RAM>16GB, ControlNet + Standard Pipelines)
-  +  `full` (RAM>42GB, All registered models)
-
-On a personal laptop, we recommend the configuration of `inference_mode: hybrid `and `local_deployment: minimal`. But the available models under this setting may be limited due to the instability of remote Hugging Face Inference Endpoints.
-
-### NVIDIA Jetson Embedded Device Support
-A [Dockerfile](./Dockerfile.jetson) is included that provides experimental support for [NVIDIA Jetson embedded devices](https://developer.nvidia.com/embedded-computing).  This image provides accelerated ffmpeg, pytorch, torchaudio, and torchvision dependencies.  To build the docker image, [ensure that the default docker runtime is set to 'nvidia'](https://github.com/NVIDIA/nvidia-docker/wiki/Advanced-topics#default-runtime).  A pre-built image is provided at https://hub.docker.com/r/toolboc/nv-jarvis.
+2. Commit
 
 ```bash
-#Build the docker image
-docker build --pull --rm -f "Dockerfile.jetson" -t toolboc/nv-jarvis:r35.2.1 
+git commit -m "✨ Nueva funcionalidad"
 ```
 
-Due to to memory requirements, JARVIS is required to run on Jetson AGX Orin family devices (64G on-board RAM device preferred) with config options set to:
-* `inference_mode: local` 
-* `local_deployment: standard`  
-
-Models and configs are recommended to be provided through a volume mount from the host to the container as shown in the `docker run` step below.  It is possible to uncomment the `# Download local models` section of the [Dockerfile](./Dockerfile.jetson) to build a container with models included.
-
-#### Start the model server, awesomechat, and web app on Jetson Orin AGX
+3. Push
 
 ```bash
-# run the container which will automatically start the model server
-docker run --name jarvis --net=host --gpus all -v ~/jarvis/configs:/app/server/configs -v ~/src/JARVIS/server/models:/app/server/models toolboc/nv-jarvis:r35.2.1
-
-# (wait for model server to complete initialization)
-
-# start awesome_chat.py 
-docker exec jarvis python3 awesome_chat.py --config configs/config.default.yaml --mode server
-
-#start the web application (application will be acessible at http://localhost:9999)
-docker exec jarvis npm run dev --prefix=/app/web
+git push origin feature/nueva-funcionalidad
 ```
 
-### Screenshots
+4. Pull Request 🚀
 
-<p align="center"><img src="./hugginggpt/assets/screenshot_q.jpg"><img src="./hugginggpt/assets/screenshot_a.jpg"></p>
+---
 
+# 👨‍💻 Desarrolladores
 
+<div align="center">
 
+## Microsoft Research AI
 
-## Citation
-If you find this work useful in your method, you can cite the paper as below:
+Investigación avanzada en sistemas multimodales, agentes autónomos e Inteligencia Artificial General.
 
-    @inproceedings{shen2023hugginggpt,
-      author = {Shen, Yongliang and Song, Kaitao and Tan, Xu and Li, Dongsheng and Lu, Weiming and Zhuang, Yueting},
-      booktitle = {Advances in Neural Information Processing Systems},
-      title = {HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in HuggingFace},
-      year = {2023}
-    }
+</div>
 
->
-    @article{shen2023taskbench,
-      title   = {TaskBench: Benchmarking Large Language Models for Task Automation},
-      author  = {Shen, Yongliang and Song, Kaitao and Tan, Xu and Zhang, Wenqi and Ren, Kan and Yuan, Siyu and Lu, Weiming and Li, Dongsheng and Zhuang, Yueting},
-      journal = {arXiv preprint arXiv:2311.18760},
-      year    = {2023}
-    }
+---
 
->
-    @article{yuan2024easytool,
-      title   = {EASYTOOL: Enhancing LLM-based Agents with Concise Tool Instruction},
-      author  = {Siyu Yuan and Kaitao Song and Jiangjie Chen and Xu Tan and Yongliang Shen and Ren Kan and Dongsheng Li and Deqing Yang},
-      journal = {arXiv preprint arXiv:2401.06201},
-      year    = {2024}
-    }
+# 🌟 Apoya el proyecto
+
+⭐ Dale una estrella  
+🍴 Haz fork  
+📢 Comparte el proyecto
+
+---
+
+# 📜 Licencia
+
+Proyecto open source destinado a investigación y desarrollo de sistemas avanzados de Inteligencia Artificial.
+
+---
+
+<div align="center">
+
+### 🤖 JARVIS (HuggingGPT) — conectando LLMs con cientos de modelos IA para acercarnos a la AGI 🚀
+
+</div>
