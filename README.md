@@ -2,7 +2,7 @@
 
 <img width="220" src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" />
 
-# 🤖 JARVIS (HuggingGPT)
+# 🤖 SistemaIAJARVIS
 
 ### Sistema de Inteligencia Artificial General basado en LLMs y modelos especializados 🚀
 
@@ -228,7 +228,7 @@ El LLM recopila los resultados y genera una respuesta final.
 # 📂 Estructura del proyecto
 
 ```bash
-JARVIS/
+SistemaIAJARVIS/
 │
 ├── server/
 │   ├── configs/
@@ -278,7 +278,7 @@ JARVIS/
 ## 1️⃣ Clonar repositorio
 
 ```bash
-git clone https://github.com/microsoft/JARVIS.git
+git clone https://github.com/isairey/SistemaIAJARVIS.git
 ```
 
 ---
@@ -286,7 +286,7 @@ git clone https://github.com/microsoft/JARVIS.git
 ## 2️⃣ Entrar al proyecto
 
 ```bash
-cd JARVIS
+cd SistemaIAJARVIS
 ```
 
 ---
@@ -541,11 +541,11 @@ git push origin feature/nueva-funcionalidad
 
 ---
 
-# 👨‍💻 Desarrolladores
+# 👨‍💻 Desarrollador
 
 <div align="center">
 
-## Microsoft Research AI
+## Isai Reyes - FullStack Developer
 
 Investigación avanzada en sistemas multimodales, agentes autónomos e Inteligencia Artificial General.
 
@@ -569,6 +569,6 @@ Proyecto open source destinado a investigación y desarrollo de sistemas avanzad
 
 <div align="center">
 
-### 🤖 JARVIS (HuggingGPT) — conectando LLMs con cientos de modelos IA para acercarnos a la AGI 🚀
+### 🤖 SistemaIAJARVIS — conectando LLMs con cientos de modelos IA para acercarnos a la AGI 🚀
 
 </div>
